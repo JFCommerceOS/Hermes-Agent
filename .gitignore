@@ -1,0 +1,10 @@
+# Hermes runtime (HERMES_HOME)
+.env
+*.log
+sessions/
+logs/
+cron/
+node/
+
+# Upstream clone is its own git repo
+hermes-agent/
