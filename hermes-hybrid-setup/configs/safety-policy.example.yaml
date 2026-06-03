@@ -1,0 +1,67 @@
+# Safety policy tiers T0–T8 — enforced by agent skills + .env gates
+# Forbidden regardless of tier: prod DB, auto git push, unapproved destructive ops, cross-project memory
+
+tiers:
+  T0_observation:
+    description: "Read-only inspection: list files, grep, explain errors"
+    allowed: [read_files, search, explain, summarize_public]
+    blocked: [write_files, shell_mutate, network_exfil]
+
+  T1_local_draft:
+    description: "Draft in workspace scratch only"
+    allowed: [write_scratch, format_docs, generate_tests_draft]
+    requires: [profile_workspace_bound]
+
+  T2_workspace_edit:
+    description: "Edit files inside active profile workspace"
+    allowed: [edit_project_files, run_unit_tests, local_git_status]
+    blocked: [git_push, production_endpoints]
+
+  T3_tooling:
+    description: "Run approved dev commands in sandbox"
+    allowed: [npm_test, pytest, docker_compose_dev]
+    requires: [ENABLE_DOCKER_SANDBOX]
+
+  T4_dependency_change:
+    description: "Modify lockfiles or install packages"
+    allowed: [package_install, lockfile_update]
+    requires: [explicit_user_approval]
+
+  T5_git_local:
+    description: "Local git commits on feature branches"
+    allowed: [git_commit, git_branch]
+    blocked: [git_push]
+    env_gate: ALLOW_GIT_PUSH
+
+  T6_destructive:
+    description: "Deletes, migrations, mass renames"
+    allowed: [destructive_fs, db_migrate_dev]
+    env_gate: ALLOW_DESTRUCTIVE_COMMANDS
+    requires: [explicit_user_approval, dry_run_first]
+
+  T7_production_touch:
+    description: "Any production or shared DB/API"
+    blocked_by_default: true
+    env_gate: ALLOW_PRODUCTION_DB
+    requires: [explicit_user_approval, escalation-reviewer]
+
+  T8_escalation:
+    description: "Cross-profile or high-risk autonomous loops"
+    requires: [escalation-reviewer, final_review_model]
+
+forbidden_always:
+  - production_database_read_write
+  - auto_git_push
+  - destructive_commands_without_approval
+  - cross_project_memory_read_write
+  - symlink_or_link_to_external_commerceos_repo
+
+env_gates:
+  ALLOW_GIT_PUSH: false
+  ALLOW_PRODUCTION_DB: false
+  ALLOW_DESTRUCTIVE_COMMANDS: false
+
+memory_isolation:
+  enforce_per_profile: true
+  profiles_root: memories
+  cross_profile_access: deny

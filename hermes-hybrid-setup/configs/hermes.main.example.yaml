@@ -1,0 +1,35 @@
+# Example Hermes main configuration — copy/adapt when applying to HERMES_HOME.
+# See scripts/apply-hermes-hybrid-config.sh and docs/MODEL_SETUP.md
+
+hermes:
+  version: "hybrid-1.0"
+  workspace_root_env: HERMES_WORKSPACE_ROOT
+  default_profile_env: DEFAULT_PROJECT_PROFILE
+
+runtime:
+  shell: git-bash
+  optional_wsl2: true
+  logs_dir: logs
+
+models:
+  catalog: configs/model-catalog.example.yaml
+  router: configs/model-router.example.yaml
+  budget: configs/budget-policy.example.yaml
+
+safety:
+  policy: configs/safety-policy.example.yaml
+  env_gates:
+    allow_git_push: ALLOW_GIT_PUSH
+    allow_production_db: ALLOW_PRODUCTION_DB
+    allow_destructive_commands: ALLOW_DESTRUCTIVE_COMMANDS
+
+profiles:
+  definitions: configs/project-profiles.example.yaml
+
+learning:
+  memory_root: memories
+  setup_script: scripts/setup-learning-memory.sh
+
+skills:
+  bundled_dir: skills
+  install_script: scripts/install-skills.sh

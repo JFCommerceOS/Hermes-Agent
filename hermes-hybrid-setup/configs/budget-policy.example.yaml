@@ -1,0 +1,76 @@
+# Budget policy — local-first routing with approval gates
+# Used by choose-model-for-task.sh and budget-gatekeeper skill
+
+monthly_budget_usd: 20
+daily_budget_usd: 2
+default_mode: local_first
+require_approval_above_usd: 0.25
+
+require_approval_for:
+  - premium_models
+  - long_context
+  - more_than_3_paid_calls
+  - commerceos_security_review
+  - accounting_or_audit_review
+  - production_like_task
+  - full_repo_context
+  - tool_execution_with_paid_model
+
+routing_order:
+  default:
+    - local_qwen_coder
+    - local_gemma_helper
+    - deepseek_flash
+    - qwen_coder_api
+    - gpt_5_mini
+    - claude_sonnet
+  summary:
+    - local_gemma_helper
+    - local_qwen_coder
+    - deepseek_flash
+  coding:
+    - local_qwen_coder
+    - qwen_coder_api
+    - gpt_5_mini
+  private:
+    - local_gemma_helper
+    - local_qwen_coder
+  debug:
+    - local_qwen_coder
+    - qwen_coder_api
+    - gpt_5_mini
+  architecture:
+    - local_qwen_coder
+    - deepseek_flash
+    - gpt_5_mini
+    - claude_sonnet
+  commerceos:
+    - local_qwen_coder
+    - deepseek_flash
+    - gpt_5_mini
+    - claude_sonnet
+  long-context:
+    - local_gemma_helper
+    - local_qwen_coder
+    - deepseek_flash
+    - gpt_5_mini
+  final_review:
+    - gpt_5_mini
+    - claude_sonnet
+
+forbidden_without_approval:
+  - premium_model_loop
+  - auto_retry_paid_api_more_than_3_times
+  - sending_secrets_to_online_model
+  - sending_production_db_data_to_online_model
+  - full_repo_upload_without_confirmation
+  - direct_git_push
+  - destructive_shell_command
+  - cross_project_memory_access
+
+# Task types that always need human approval before paid/premium use
+approval_required_tasks:
+  - commerceos
+  - final_review
+  - architecture
+  - long-context

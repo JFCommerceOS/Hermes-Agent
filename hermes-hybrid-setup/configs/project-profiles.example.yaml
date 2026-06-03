@@ -1,0 +1,38 @@
+# Isolated project profiles — each binds workspace + memory; no CommerceOS repo links
+
+profiles:
+  lifeos-agent:
+    display_name: "LifeOS Agent"
+    workspace: workspaces/lifeos
+    memory: memories/lifeos
+    description: "Personal planning, habits, non-work notes"
+    safety_default_tier: T1_local_draft
+    allowed_task_types: [quick_question, summarize, medium_planning]
+
+  commerceos-dev-agent:
+    display_name: "CommerceOS Dev Agent (standalone sandbox)"
+    workspace: workspaces/commerceos-dev
+    memory: memories/commerceos-dev
+    description: "Commerce-themed dev experiments in isolated workspace — not linked to D:/CommerceOS"
+    safety_default_tier: T2_workspace_edit
+    allowed_task_types: [coding, refactor, test_fix, medium_planning, budget_sensitive]
+
+  homeos-agent:
+    display_name: "HomeOS Agent"
+    workspace: workspaces/homeos
+    memory: memories/homeos
+    description: "Home automation notes, inventory, maintenance logs"
+    safety_default_tier: T1_local_draft
+    allowed_task_types: [quick_question, summarize, coding]
+
+  research-agent:
+    display_name: "Research Agent"
+    workspace: workspaces/research
+    memory: memories/research
+    description: "Papers, experiments, literature notes"
+    safety_default_tier: T2_workspace_edit
+    allowed_task_types: [summarize, medium_planning, long_planning, final_review]
+
+active_profile_resolution:
+  file: ACTIVE_PROFILE
+  env_fallback: DEFAULT_PROJECT_PROFILE

@@ -1,0 +1,119 @@
+# Model catalog — local-first selectable models for Hermes hybrid
+# IDs are referenced by budget-policy routing_order and choose-model-for-task.sh
+
+models:
+  local_qwen_coder:
+    provider: ollama
+    cost_level: free_local
+    privacy: high
+    best_for:
+      - coding help
+      - code explanation
+      - terminal log summary
+      - Cursor prompt drafts
+      - small bug fixes
+      - local agent skill drafts
+    weak_for:
+      - final security decision
+      - production architecture approval
+      - accounting/audit final approval
+      - very large repo reasoning
+    escalation:
+      - qwen_coder_api
+      - deepseek_flash
+      - gpt_5_mini
+    floating_note: "Use first for coding. Free local use. Good for logs, small fixes, and Cursor prompt drafts. Escalate if architecture/security/accounting risk."
+
+  local_gemma_helper:
+    provider: ollama
+    cost_level: free_local
+    privacy: high
+    best_for:
+      - private notes
+      - summarization
+      - local RAG answers
+      - offline reasoning
+      - personal project memory
+    weak_for:
+      - complex coding final answer
+      - high-risk system architecture
+      - production decisions
+    escalation:
+      - local_qwen_coder
+      - deepseek_flash
+    floating_note: "Use for private/offline notes and summaries. Cheapest and private. Not the best for deep coding."
+
+  deepseek_flash:
+    provider: deepseek
+    cost_level: cheap
+    privacy: online
+    best_for:
+      - cheap online reasoning
+      - planning
+      - SOP draft
+      - first online escalation
+      - long agent sessions with low budget
+    weak_for:
+      - secrets
+      - production DB data
+      - final high-risk review
+      - sensitive business data
+    escalation:
+      - qwen_coder_api
+      - gpt_5_mini
+      - claude_sonnet
+    floating_note: "Cheap online reasoning. Use when local is not enough. Avoid secrets and production data."
+
+  qwen_coder_api:
+    provider: qwen
+    cost_level: cheap_medium
+    privacy: online
+    best_for:
+      - harder coding
+      - refactor planning
+      - test failure diagnosis
+      - agentic skill building
+      - tool/code generation
+    weak_for:
+      - secrets
+      - production DB data
+      - final security approval
+    escalation:
+      - gpt_5_mini
+      - claude_sonnet
+    floating_note: "Online coding specialist. Use when local Qwen fails or the coding task is larger."
+
+  gpt_5_mini:
+    provider: openai
+    cost_level: medium_high
+    privacy: online
+    best_for:
+      - serious architecture
+      - complex debugging
+      - high-risk review
+      - CommerceOS governance review
+      - agentic system planning
+    weak_for:
+      - simple summaries
+      - daily cheap tasks
+      - repeated loops without approval
+    escalation:
+      - claude_sonnet
+    floating_note: "Use for important reasoning or risky architecture. More expensive; ask before long runs."
+
+  claude_sonnet:
+    provider: anthropic
+    cost_level: high
+    privacy: online
+    best_for:
+      - final review
+      - SOP quality review
+      - security review
+      - documentation quality
+      - second-opinion architecture review
+    weak_for:
+      - daily default work
+      - simple code/log tasks
+      - repeated cheap tasks
+    escalation: []
+    floating_note: "Expensive final reviewer. Do not use as daily model."

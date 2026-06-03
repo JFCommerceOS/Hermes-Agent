@@ -1,0 +1,27 @@
+# Secrets and local overrides
+.env
+ACTIVE_PROFILE
+
+# Runtime logs (keep directory via .gitkeep)
+logs/*
+!logs/.gitkeep
+
+# Workspace scratch and agent artifacts
+workspaces/**/scratch/
+workspaces/**/.cache/
+workspaces/**/node_modules/
+
+# Learning memory exports (optional local only)
+memories/**/exports/*.jsonl
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Hermes runtime copies (if you materialize configs locally)
+configs/*.local.yaml
+.hermes-local/

@@ -1,0 +1,8 @@
+# Copy to ACTIVE_PROFILE (gitignored) to switch the default agent profile.
+# Valid values (must match configs/project-profiles.example.yaml):
+#   lifeos-agent
+#   commerceos-dev-agent
+#   homeos-agent
+#   research-agent
+
+commerceos-dev-agent

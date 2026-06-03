@@ -1,0 +1,44 @@
+# Routing rules — consumed by test-hybrid-routing.sh and choose-model-for-task.sh
+# Strategy: local_first unless task needs API context or final review
+
+defaults:
+  primary: local_qwen_coder
+  helper: local_gemma_helper
+  fallback_api: deepseek_flash
+
+task_routes:
+  quick_question:
+    model: local_gemma_helper
+  summarize:
+    model: local_gemma_helper
+  coding:
+    model: local_qwen_coder
+  refactor:
+    model: local_qwen_coder
+  test_fix:
+    model: local_qwen_coder
+  medium_planning:
+    model: local_qwen_coder
+    escalate_if_context_tokens_gt: 24000
+    escalate_to: qwen_coder_api
+  long_planning:
+    model: claude_sonnet
+    reason: "Large cross-repo planning needs API context and strong reasoning"
+  architecture:
+    model: claude_sonnet
+  final_review:
+    model: claude_sonnet
+    require_approval: true
+  budget_sensitive:
+    model: deepseek_flash
+  privacy_strict:
+    model: local_qwen_coder
+    disallow_api: true
+
+hybrid_rules:
+  local_first: true
+  online_main_for:
+    - long_planning
+    - architecture
+    - final_review
+  helper_parallel_allowed: true

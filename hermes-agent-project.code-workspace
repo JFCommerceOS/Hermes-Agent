@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Hermes Agent Project"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.cwd": "${workspaceFolder}/hermes-hybrid-setup"
+  }
+}
