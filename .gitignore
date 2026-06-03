@@ -1,17 +1,67 @@
-# Hermes runtime (HERMES_HOME)
+# === Secrets and environment ===
 .env
-config.yaml
+.env.*
+!.env.example
+ACTIVE_PROFILE
+*.key
+*.pem
+*.p12
+*.pfx
+
+# === Runtime logs (keep directory via .gitkeep) ===
+logs/*
+!logs/.gitkeep
 *.log
-sessions/
-logs/
-cron/
-node/
-/skills/
 
-# Upstream clone is its own git repo
-hermes-agent/
+# === Local RAG index (per profile, never commit) ===
+memories/**/.rag-index/
 
-# Hybrid setup — track templates; ignore local secrets
-hermes-hybrid-setup/.env
-hermes-hybrid-setup/logs/*.log
-hermes-hybrid-setup/secrets/
+# === Hermes runtime ===
+.hermes/
+.hermes-local/
+configs/*.local.yaml
+
+# === Model and cache files ===
+models/
+ollama/
+*.gguf
+*.safetensors
+.cache/
+tmp/
+.temp/
+
+# === Build / dist ===
+dist/
+build/
+node_modules/
+
+# === Python ===
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# === Workspace runtime (per-project) ===
+workspaces/**/scratch/
+workspaces/**/.cache/
+workspaces/**/node_modules/
+workspaces/*/.env
+
+# === Learning memory exports (local only) ===
+memories/**/exports/*.jsonl
+memories/**/do-not-ingest/*
+!memories/**/do-not-ingest/.gitkeep
+
+# === Evaluations private data ===
+evaluations/*/
+!evaluations/.gitkeep
+evaluations/*/raw-secrets/
+api-spend-private/
+
+# === OS / editor ===
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
